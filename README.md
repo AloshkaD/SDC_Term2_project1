@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Extended Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
 
@@ -83,3 +84,14 @@ and how to install it.
 
 Regardless of the IDE used, every submitted project must
 still be compilable with cmake and make.
+=======
+# SDC_extended_kalman
+Note: This project isn't complete yet!
+
+Extended kalman filter in C++ designed for tracking objects using fused data from a Lidar and a Radar. 
+
+Dependancies
+cmake: 3.5
+make: 4.1
+gcc/g++: 5.4
+>>>>>>> a0131551fb29033be9de6552b7b56b77145e8649
