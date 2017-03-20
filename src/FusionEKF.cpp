@@ -36,6 +36,16 @@ FusionEKF::FusionEKF() {
     * Finish initializing the FusionEKF.
     * Set the process and measurement noises
   */
+  H_laser_ << 0, 0,
+        0, 0,
+        0, 0,
+        0, 0;
+
+  Hj_ << 0, 0, 0,
+        0, 0, 0,
+        0, 0, 0,
+        0, 0, 0;
+
 
 
 }
