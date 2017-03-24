@@ -96,8 +96,17 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       /**
       Initialize state.
       */
+      float px_laser = measurmant_pack.raw_measurments_[0];
+      float py_laser = measurmant_pack.raw_measurments_[1];
+
+      if(px_laser == 0 or py_laser == 0){
+        return;
+      }
+      ekf_.x_ << px_laser, py_laser, 0, 0;
     }
 
+    }
+    
     // done initializing, no need to predict or update
     is_initialized_ = true;
     return;
