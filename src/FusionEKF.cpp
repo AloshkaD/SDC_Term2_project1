@@ -36,16 +36,18 @@ FusionEKF::FusionEKF() {
     * Finish initializing the FusionEKF.
     * Set the process and measurement noises
   */
-  H_laser_ << 0, 0,
-        0, 0,
-        0, 0,
-        0, 0;
+  H_laser_ << 1, 0, 0, 0,
+        0, 1, 0, 0;
 
-  Hj_ << 0, 0, 0,
-        0, 0, 0,
-        0, 0, 0,
-        0, 0, 0;
-
+  Hj_ << 1, 1, 0, 0,
+        1, 1, 0, 0,
+        1, 1, 0, 0,
+        1, 1, 1, 1;
+  ekf_.F_ = MatrixXd(4, 4);
+  ekf_.F_ << 1, 0, 1, 0,
+          0, 1, 0, 1,
+          0, 0, 1, 0,
+          0, 0, 0, 1;
 
 
 }
@@ -61,6 +63,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
    *  Initialization
    ****************************************************************************/
+  int noise_ax = 9;
+  int noise_ay = 9;
   if (!is_initialized_) {
     /**
     TODO:
@@ -71,12 +75,16 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // first measurement
     cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
-    ekf_.x_ << 1, 1, 1, 1;
+    previous_timestamp_ = measurement_pack.timestamp_;
+    // Zero initialization for the first measurment 
+    //ekf_.x_ << 1, 1, 1, 1;
+    ekf_.x_ << 0, 0, 0, 0;
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
       Convert radar from polar to cartesian coordinates and initialize state.
       */
+      float theta = measurmant_
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
