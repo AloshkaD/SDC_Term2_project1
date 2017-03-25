@@ -174,12 +174,14 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         //ekf_.R_ = R_radar_;
 
         //Convert from cartesian to polar notation prior calling the updating function
-        float x = ekf_.x_[0];
+        float x = ekf_.x_(0);
 
-        float y = ekf_.x_[1];
-        float vx = ekf_.x_[2];
-        float vy = ekf_.x_[3];
-
+        float y = ekf_.x_(1);
+        float vx = ekf_.x_(2);
+        float vy = ekf_.x_(3);
+        
+        ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
+        ekf_.R_ = R_radar_;
         //h(x')
         VectorXd z_pred = VectorXd(3);
         float rho = sqrt(x*x + y*y);
