@@ -80,8 +80,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     ekf_.x_ = VectorXd(4);
     //previous_timestamp_ = measurement_pack.timestamp_;
     // Zero initialization for the first measurment 
-    ekf_.x_ << 1, 1, 1, 1;
-    //ekf_.x_ << 0, 0, 0, 0;
+    //ekf_.x_ << 1, 1, 1, 1;
+    ekf_.x_ << 0, 0, 0, 0;
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
