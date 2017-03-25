@@ -103,7 +103,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         return;
       }
       ekf_.x_ << px_laser, py_laser, 0, 0;
-    }
+    
 
     
     ekf_.P_ = MatrixXd(4, 4);
@@ -190,6 +190,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   }
 
   // print the output
-  //cout << "x_ = " << ekf_.x_ << endl;
-  //cout << "P_ = " << ekf_.P_ << endl;
-
+  cout << "x_ = " << ekf_.x_ << endl;
+  cout << "P_ = " << ekf_.P_ << endl;
+}
