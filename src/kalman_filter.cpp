@@ -27,7 +27,7 @@ void KalmanFilter::Predict() {
     P_ = F_ * P_ * Ft +Q_;
 }
 
-void KalmanFilter::Update(const VectorXd &z, const VectorXd &z_pred) {
+void KalmanFilter::UpdateRadar(const VectorXd &z, const VectorXd &z_pred) {
   /**
   TODO:
     * update the state by using Kalman Filter equations
@@ -48,7 +48,7 @@ void KalmanFilter::Update(const VectorXd &z, const VectorXd &z_pred) {
 
 }
 
-void KalmanFilter::UpdateEKF(const VectorXd &z) {
+void KalmanFilter::UpdateLaser(const VectorXd &z) {
   /**
   TODO:
     * update the state by using Extended Kalman Filter equations
