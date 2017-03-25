@@ -180,9 +180,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         float vy = ekf_.x_[3];
 
         //h(x')
+        VectorXd z_pred = VectorXd(3);
         float rho = sqrt(x*x + y*y);
         float theta = atan2(y,x);
-
         float radial_velocity = (x*vx + y*vy)/rho;
         z_pred << rho, theta, radial_velocity;
 
