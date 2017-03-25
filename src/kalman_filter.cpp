@@ -32,7 +32,7 @@ void KalmanFilter::UpdateRadar(const VectorXd &z, const VectorXd &z_pred) {
   TODO:
     * update the state by using Kalman Filter equations
   */
-    VectorXd z_pred = H_ * x_;
+    //VectorXd z_pred = H_ * x_;
     VectorXd y = z - z_pred;
     MatrixXd Ht = H_.transpose();
     MatrixXd S = H_ * P_ * Ht + R_;
