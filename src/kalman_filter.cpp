@@ -35,8 +35,7 @@ void KalmanFilter::UpdateRadar(const VectorXd &z, const VectorXd &z_pred) {
     //VectorXd z_pred = H_ * x_;
     VectorXd y = z - z_pred;
 
-    while (y(1)> M_PI) y(1)-=2.*M_PI;
-    while (y(1)<-M_PI) y(1)+=2.*M_PI;
+
 
 
     MatrixXd Ht = H_.transpose();
