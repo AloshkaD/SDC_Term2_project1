@@ -52,8 +52,8 @@ FusionEKF::FusionEKF() {
   ekf_.P_ = MatrixXd(4, 4);
   //acceleration noise, from the course it 
   //was advised to set it to 9
-  int noise_ax = 9;
-  int noise_ay = 9;
+  noise_ax = 9;
+  noise_ay = 9;
 }
 
 /**
@@ -80,8 +80,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     ekf_.x_ = VectorXd(4);
     //previous_timestamp_ = measurement_pack.timestamp_;
     // Zero initialization for the first measurment 
-    //ekf_.x_ << 1, 1, 1, 1;
-    ekf_.x_ << 0, 0, 0, 0;
+    ekf_.x_ << 1, 1, 1, 1;
+    //ekf_.x_ << 0, 0, 0, 0;
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
@@ -115,9 +115,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     
     ekf_.F_ = MatrixXd(4, 4);
     ekf_.F_ << 1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1;
+               0, 1, 0, 0,
+               0, 0, 1, 0,
+               0, 0, 0, 1;
     // done initializing, no need to predict or update
     previous_timestamp_ = measurement_pack.timestamp_;
     is_initialized_ = true;
@@ -141,18 +141,20 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
 
   //if(dt > 0.001){
-    ekf_.F_(0, 2) = dt;
-    ekf_.F_(1, 3) = dt;
+
 
     float dt_2 = dt * dt;
     float dt_3 = dt_2 * dt;
     float dt_4 = dt_3 * dt;
 
+    ekf_.F_(0, 2) = dt;
+    ekf_.F_(1, 3) = dt;
+
     ekf_.Q_ = MatrixXd(4, 4);
     ekf_.Q_ <<  dt_4/4*noise_ax, 0, dt_3/2*noise_ax, 0,
-                 0, dt_4/4*noise_ay, 0, dt_3/2*noise_ay,
-                 dt_3/2*noise_ax, 0, dt_2*noise_ax, 0,
-                 0, dt_3/2*noise_ay, 0, dt_2*noise_ay;
+        0, dt_4/4*noise_ay, 0, dt_3/2*noise_ay,
+        dt_3/2*noise_ax, 0, dt_2*noise_ax, 0,
+        0, dt_3/2*noise_ay, 0, dt_2*noise_ay;
 
   ekf_.Predict();
 
@@ -183,10 +185,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
         ekf_.R_ = R_radar_;
         //h(x')
-        VectorXd z_pred = VectorXd(3);
+        
         float rho = sqrt(x*x + y*y);
         float theta = atan2(y,x);
         float radial_velocity = (x*vx + y*vy)/rho;
+        VectorXd z_pred = VectorXd(3);
         z_pred << rho, theta, radial_velocity;
 
 
@@ -200,7 +203,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   }
 
   // print the output
-  cout << "x_ = " << ekf_.x_ << endl;
-  cout << "P_ = " << ekf_.P_ << endl;
+  //cout << "x_ = " << ekf_.x_ << endl;
+  //cout << "P_ = " << ekf_.P_ << endl;
 }
 

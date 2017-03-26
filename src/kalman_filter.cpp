@@ -34,17 +34,22 @@ void KalmanFilter::UpdateRadar(const VectorXd &z, const VectorXd &z_pred) {
   */
     //VectorXd z_pred = H_ * x_;
     VectorXd y = z - z_pred;
+
+    while (y(1)> M_PI) y(1)-=2.*M_PI;
+    while (y(1)<-M_PI) y(1)+=2.*M_PI;
+
+
     MatrixXd Ht = H_.transpose();
     MatrixXd S = H_ * P_ * Ht + R_;
     MatrixXd Si = S.inverse();
     MatrixXd PHt = P_ * Ht;
-    MatrixXd K = PHt * Si;
+    MatrixXd k = PHt * Si;
 
     //new estimate
-    x_ = x_ + (K * y);
+    x_ = x_ + (k * y);
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
-    P_ = (I - K * H_) * P_;
+    P_ = (I - k * H_) * P_;
 
 }
 
@@ -61,11 +66,11 @@ void KalmanFilter::UpdateLaser(const VectorXd &z) {
     MatrixXd S = H_ * P_ * Ht + R_;
     MatrixXd Si = S.inverse();
     MatrixXd PHt = P_ * Ht;
-    MatrixXd K = PHt * Si;
+    MatrixXd k = PHt * Si;
 
     //new estimate
-    x_ = x_ + (K * y);
+    x_ = x_ + (k * y);
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
-    P_ = (I - K * H_) * P_;
+    P_ = (I - k * H_) * P_;
 }

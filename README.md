@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+ 
 # Extended Kalman Filter(in progress)
 Note: This project isn't complete yet!
 
