@@ -52,8 +52,8 @@ FusionEKF::FusionEKF() {
   ekf_.P_ = MatrixXd(4, 4);
   //acceleration noise, from the course it 
   //was advised to set it to 9
-  int noise_ax = 9;
-  int noise_ay = 9;
+  noise_ax = 9;
+  noise_ay = 9;
 }
 
 /**
@@ -101,15 +101,17 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       /**
       Initialize state with 0,0,0,0 value
       */
-      //float px_laser = measurement_pack.raw_measurements_[0];
-      //float py_laser = measurement_pack.raw_measurements_[1];
+      float px_laser = measurement_pack.raw_measurements_[0];
+      float py_laser = measurement_pack.raw_measurements_[1];
 
-      //if(px_laser == 0 or py_laser == 0){
-        //return;
-            ekf_.x_(0) = measurement_pack.raw_measurements_(0);
-	          ekf_.x_(1) = measurement_pack.raw_measurements_(1);
+      if(px_laser == 0 or py_laser == 0){
+        return;
+            //ekf_.x_(0) = measurement_pack.raw_measurements_(0);
+	          //ekf_.x_(1) = measurement_pack.raw_measurements_(1);
+            }
+            ekf_.x_ << px_laser, py_laser, 0, 0;
       }
-      //ekf_.x_ << px_laser, py_laser, 0, 0;
+      
     
 
     
