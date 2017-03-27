@@ -52,8 +52,8 @@ FusionEKF::FusionEKF() {
   ekf_.P_ = MatrixXd(4, 4);
   //acceleration noise, from the course it 
   //was advised to set it to 9
-  noise_ax = 9;
-  noise_ay = 9;
+  int noise_ax = 9;
+  int noise_ay = 9;
 }
 
 /**
