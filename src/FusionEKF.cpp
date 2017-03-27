@@ -99,7 +99,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
-      Initialize state.
+      Initialize state with 0,0,0,0 value
       */
       //float px_laser = measurement_pack.raw_measurements_[0];
       //float py_laser = measurement_pack.raw_measurements_[1];
