@@ -1,12 +1,19 @@
  
 # Extended Kalman Filter Algorithm in C++ with Lidar and Radar Fusion
 
-The Final Accuracy - RMSE is:
-0.0753646
-0.0830311
-0.578148
-0.556225
+The Final Accuracy - RMSE for Lidar Radar 1 is:
+0.0651646
+0.0605411
+0.530603
+0.544197
 
+The Final Accuracy - RMSE for Lidar Radar 2 is:
+0.208972
+0.214995
+0.510126
+0.808964
+
+![Alt text](newplot1.png?raw=true "Plot1")
 ## Dependencies
 
 * cmake >= 3.5
@@ -30,5 +37,5 @@ The Final Accuracy - RMSE is:
    some sample inputs in 'data/'.
     - eg. `./ExtendedKF ../data/sample-laser-radar-measurement-data-1.txt output.txt`
 
- 
+ Re
  
