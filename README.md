@@ -15,7 +15,7 @@ The Final Accuracy - RMSE for Lidar Radar 2 is:
 
 ![Alt text](newplot1.png?raw=true "Plot1")
 
-![Alt text](newplot1.png?raw=true "Plot2")
+![Alt text](newplot2.png?raw=true "Plot2")
 ## Dependencies
 
 * cmake >= 3.5
