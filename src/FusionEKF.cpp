@@ -78,7 +78,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // first measurement
     //cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
-    //previous_timestamp_ = measurement_pack.timestamp_;
+    previous_timestamp_ = measurement_pack.timestamp_;
     // Zero initialization for the first measurment 
     ekf_.x_ << 1, 1, 1, 1;
     //ekf_.x_ << 0, 0, 0, 0;
@@ -121,7 +121,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                0, 0, 1, 0,
                0, 0, 0, 1;
     // done initializing, no need to predict or update
-    previous_timestamp_ = measurement_pack.timestamp_;
+    //previous_timestamp_ = measurement_pack.timestamp_;
     is_initialized_ = true;
     return;
   }
