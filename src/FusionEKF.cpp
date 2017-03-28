@@ -46,10 +46,16 @@ FusionEKF::FusionEKF() {
   */
   ekf_.F_ = MatrixXd(4, 4);
   ekf_.F_ << 1, 0, 1, 0,
-          0, 1, 0, 1,
-          0, 0, 1, 0,
-          0, 0, 0, 1;
+             0, 1, 0, 1,
+             0, 0, 1, 0,
+             0, 0, 0, 1;
   ekf_.P_ = MatrixXd(4, 4);
+  
+  ekf_.P_ << 1, 0, 0, 0,
+             0, 1, 0, 0,
+             0, 0, 100, 0,
+             0, 0, 0, 100;
+  
   //acceleration noise, from the course it 
   //was advised to set it to 9
   noise_ax = 9;
@@ -90,12 +96,20 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       float theta = measurement_pack.raw_measurements_[1];
       float px = measurement_pack.raw_measurements_[0]*cos(theta);
       float py = measurement_pack.raw_measurements_[0]*sin(theta);
-      if(px == 0 or py == 0){
+      if(fabs(px) < 0.00001 or fabs(py) < 0.00001){
+        //cout<< "px or py is 0"<<"\n";
+        //px = 0.00001;
+        //py = 0.00001;
         return;
       }
-      ekf_.x_ << px, py, 0, 0;
-          //ekf_.x_(0) = measurement_pack.raw_measurements_(0)*cos(measurement_pack.raw_measurements_(1));
-	  	    //ekf_.x_(1) = measurement_pack.raw_measurements_(0)*sin(measurement_pack.raw_measurements_(1));
+
+      float ro_dot = measurement_pack.raw_measurements_(2);
+      float phi = measurement_pack.raw_measurements_(1);
+      ekf_.x_ << px, py, ro_dot * cos(phi), ro_dot * sin(phi);
+
+      //ekf_.x_ << px, py, 0, 0;
+
+
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
@@ -104,11 +118,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       float px_laser = measurement_pack.raw_measurements_[0];
       float py_laser = measurement_pack.raw_measurements_[1];
 
-      if(px_laser == 0 or py_laser == 0){
+      if(fabs(px_laser) < 0.00001 or fabs(py_laser) < 0.00001){
+        //cout<< "px_laser or py_laser is 0"<<"\n";
+        //px_laser = 0.00001;
+        //py_laser = 0.00001;
         return;
-            //ekf_.x_(0) = measurement_pack.raw_measurements_(0);
-	          //ekf_.x_(1) = measurement_pack.raw_measurements_(1);
-            }
+      }
             ekf_.x_ << px_laser, py_laser, 0, 0;
       }
       
@@ -142,7 +157,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   previous_timestamp_ = measurement_pack.timestamp_;
 
 
-  //if(dt > 0.001){
+  if(dt > 0.001){
 
 
     float dt_2 = dt * dt;
@@ -159,6 +174,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         0, dt_3/2*noise_ay, 0, dt_2*noise_ay;
 
   ekf_.Predict();
+  }
 
   /*****************************************************************************
    *  Update
@@ -178,19 +194,26 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         //ekf_.R_ = R_radar_;
 
         //Convert from cartesian to polar notation prior calling the updating function
-        float x = ekf_.x_(0);
 
-        float y = ekf_.x_(1);
-        float vx = ekf_.x_(2);
-        float vy = ekf_.x_(3);
+
+        float x = ekf_.x_[0];
+        float y = ekf_.x_[1];
+        float vx = ekf_.x_[2];
+        float vy = ekf_.x_[3];
         
+
         ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
         ekf_.R_ = R_radar_;
-        //h(x')
+        
         
         float rho = sqrt(x*x + y*y);
+        if(fabs(rho) < 0.00001){
+           cout<< "rho is 0"<<"\n";
+           rho=0.00001;
+          }
         float theta = atan2(y,x);
         float radial_velocity = (x*vx + y*vy)/rho;
+
         VectorXd z_pred = VectorXd(3);
         z_pred << rho, theta, radial_velocity;
 
