@@ -17,7 +17,7 @@ FusionEKF::FusionEKF() {
   previous_timestamp_ = 0;
 
   // initializing matrices
-  R_laser_ = MatrixXd(2, 2);
+  R_laser_ = MatrixXd(2, 2); 
   R_radar_ = MatrixXd(3, 3);
   H_laser_ = MatrixXd(2, 4);
   Hj_ = MatrixXd(3, 4);
@@ -192,6 +192,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         //Hj_ << tools.CalculateJacobian(ekf_.x_);
         //ekf_.H_ = Hj_;
         //ekf_.R_ = R_radar_;
+  	    /// this is for the class 
 
         //Convert from cartesian to polar notation prior calling the updating function
 
