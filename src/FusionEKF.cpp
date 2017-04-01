@@ -58,8 +58,8 @@ FusionEKF::FusionEKF() {
   
   //acceleration noise, from the course it 
   //was advised to set it to 9
-  noise_ax = 9;
-  noise_ay = 9;
+  noise_ax = 8;
+  noise_ay = 8;
 }
 
 /**
